@@ -1,1 +1,70 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raining Words</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            background-color: lightblue;
+            width: 400px;
+            height: 400px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+    <button onclick="startRain()">Start Rain</button>
+    <canvas id="rainCanvas" width="400" height="400"></canvas>
+    
+    <script>
+        const canvas = document.getElementById("rainCanvas");
+        const ctx = canvas.getContext("2d");
+        let words = [];
+        
+        function startRain() {
+            const text = document.getElementById("textInput").value;
+            words = text.split(/\s+/).map(word => ({
+                text: word,
+                x: Math.random() * canvas.width,
+                y: Math.random() * -canvas.height, 
+                speed: Math.random() * 3 + 1
+            }));
+            animate();
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            words.forEach(word => {
+                ctx.fillStyle = "black";
+                ctx.font = "20px Arial";
+                ctx.fillText(word.text, word.x, word.y);
+                word.y += word.speed;
+                if (word.y > canvas.height) {
+                    word.y = Math.random() * -canvas.height;
+                    word.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
