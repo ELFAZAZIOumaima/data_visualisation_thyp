@@ -33,12 +33,16 @@
 <body>
     <textarea id="textInput" placeholder="Paste your text here..."></textarea>
     <button onclick="startRain()">Start Rain</button>
+    <button onclick="stopRain()">Stop Rain</button>
+    <button onclick="toggleColorMode()">Toggle Black & White / Color</button>
     <canvas id="rainCanvas" width="400" height="400"></canvas>
     
     <script>
         const canvas = document.getElementById("rainCanvas");
         const ctx = canvas.getContext("2d");
         let words = [];
+        let animationFrame;
+        let isBlackAndWhite = false;
         
         function startRain() {
             const text = document.getElementById("textInput").value;
@@ -46,15 +50,20 @@
                 text: word,
                 x: Math.random() * canvas.width,
                 y: Math.random() * -canvas.height, 
-                speed: Math.random() * 3 + 1
+                speed: Math.random() * 3 + 1,
+                color: getRandomColor()
             }));
             animate();
+        }
+        
+        function stopRain() {
+            cancelAnimationFrame(animationFrame);
         }
         
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             words.forEach(word => {
-                ctx.fillStyle = "black";
+                ctx.fillStyle = isBlackAndWhite ? "black" : word.color;
                 ctx.font = "20px Arial";
                 ctx.fillText(word.text, word.x, word.y);
                 word.y += word.speed;
@@ -63,7 +72,15 @@
                     word.x = Math.random() * canvas.width;
                 }
             });
-            requestAnimationFrame(animate);
+            animationFrame = requestAnimationFrame(animate);
+        }
+        
+        function toggleColorMode() {
+            isBlackAndWhite = !isBlackAndWhite;
+        }
+        
+        function getRandomColor() {
+            return `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
         }
     </script>
 </body>
