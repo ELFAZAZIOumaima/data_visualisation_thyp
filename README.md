@@ -4,4 +4,4 @@
 
 **Atelier Datavis 2025, Paris 8**
 
-[URL du site live](https://elfazazioumaima.github.io/datavisualization/)
+[Consulter la page HTML](https://elfazazioumaima.github.io/datavisualization/seance01ex01.html)
